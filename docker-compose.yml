@@ -1,0 +1,51 @@
+version: '3'
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  mysql-container:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: appbankbd
+      MYSQL_USER: usuario_bd
+      MYSQL_PASSWORD: 1234
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "mysql-container", "--user=root", "--password=root", "-e", "status"]
+      interval: 10s
+      retries: 5
+      timeout: 10s
+    networks:
+      - app-network
+
+  ms-account:
+    image: ms-account
+    build:
+      context: .
+      dockerfile: ./ms-account/Dockerfile
+    ports:
+      - "8281:8281"
+    networks:
+      - app-network
+    depends_on:
+      mysql-container:
+        condition: service_healthy
+    restart: on-failure
+
+  ms-client:
+    image: ms-client
+    build:
+      context: .
+      dockerfile: ./ms-client/Dockerfile
+    ports:
+      - "8282:8282"
+    networks:
+      - app-network
+    depends_on:
+      mysql-container:
+        condition: service_healthy
+    restart: on-failure
