@@ -1,6 +1,3 @@
-
-
-CREATE DATABASE IF NOT EXISTS appbankbd;
 USE appbankbd;
 CREATE TABLE  IF NOT EXISTS PERSON (
                                        person_id INTEGER PRIMARY KEY AUTO_INCREMENT,
