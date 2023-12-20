@@ -2,17 +2,18 @@ package com.devsu.msclient.controller;
 
 import com.devsu.msclient.exception.MessageException;
 import com.devsu.msclient.exception.NotFoundException;
-import com.devsu.msclient.model.dto.ClientDto;
 import com.devsu.msclient.model.dto.ClientSaveDto;
 import com.devsu.msclient.service.ClientService;
+import com.devsu.msclient.util.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/clientes")
@@ -28,8 +29,7 @@ public class ClientController {
     @GetMapping
     public ResponseEntity<?> getAllClients() {
         try {
-            List<ClientDto> clients = clientService.getAllClients();
-            return new ResponseEntity<>(clients, HttpStatus.OK);
+            return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(MessageException.Message(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()));
@@ -39,8 +39,7 @@ public class ClientController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getClientById(@PathVariable int id) {
         try {
-            ClientDto client = clientService.getClientById(id);
-            return ResponseEntity.ok(client);
+            return ResponseEntity.ok(clientService.getClientById(id));
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(MessageException.Message(HttpStatus.NOT_FOUND, e.getLocalizedMessage()));
@@ -54,8 +53,10 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<?> createClient(@RequestBody @Valid ClientSaveDto clientSaveDto) {
         try {
-            ClientDto createdClient = clientService.saveClient(clientSaveDto);
-            return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
+            return new ResponseEntity<>(clientService.saveClient(clientSaveDto), HttpStatus.CREATED);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MessageException.Message(HttpStatus.INTERNAL_SERVER_ERROR,Constants.ERROR_BD));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(MessageException.Message(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()));
@@ -66,11 +67,13 @@ public class ClientController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateClient(@PathVariable int id, @RequestBody @Valid ClientSaveDto clientSaveDto) {
         try {
-            ClientDto updatedClient = clientService.updateClient(id, clientSaveDto);
-            return new ResponseEntity<>(updatedClient, HttpStatus.CREATED);
+            return new ResponseEntity<>(clientService.updateClient(id, clientSaveDto), HttpStatus.CREATED);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(MessageException.Message(HttpStatus.NOT_FOUND, e.getLocalizedMessage()));
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MessageException.Message(HttpStatus.INTERNAL_SERVER_ERROR,Constants.ERROR_BD));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(MessageException.Message(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()));

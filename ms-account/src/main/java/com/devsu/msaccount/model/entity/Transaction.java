@@ -1,9 +1,16 @@
 package com.devsu.msaccount.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Entity
 public class Transaction {
@@ -17,10 +24,8 @@ public class Transaction {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateRegister;
-
-    private String transactionType;
-
     private double amount;
+    private double availableBalance;
     private boolean status;
 
 }

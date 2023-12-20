@@ -1,22 +1,20 @@
 package com.devsu.msaccount.service;
 
-import com.devsu.msaccount.model.dto.AccountDto;
-import com.devsu.msaccount.model.dto.AccountSaveDto;
 import com.devsu.msaccount.model.dto.TransactionDto;
 import com.devsu.msaccount.model.dto.TransactionSaveDto;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface TransactionService {
-    List<TransactionDto> getAllTransactions();
+    Flux<TransactionDto> getAllTransactions();
 
-    TransactionDto getTransactionById(int id);
+    Mono<TransactionDto> getTransactionById(int id);
 
-    TransactionDto saveTransaction(TransactionSaveDto TransactionSaveDto);
+    Mono<TransactionDto> saveTransaction(TransactionSaveDto TransactionSaveDto);
 
-    TransactionDto updateTransaction(int id, TransactionSaveDto TransactionUpdateDto);
+    Mono<TransactionDto> updateTransaction(int id, TransactionSaveDto TransactionUpdateDto);
 
-    void deleteTransactionById(int id);
+    Mono<Void> deleteTransactionById(int id);
 }
 
 

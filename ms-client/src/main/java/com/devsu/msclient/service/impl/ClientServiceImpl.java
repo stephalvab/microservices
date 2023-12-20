@@ -10,9 +10,8 @@ import com.devsu.msclient.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -20,48 +19,44 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public ClientServiceImpl(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    @Override
+    public Flux<ClientDto> getAllClients() {
+        return Flux.fromStream(clientRepository.findAll().stream()
+                .map(this::builderClientDto));
     }
 
     @Override
-    public List<ClientDto> getAllClients() {
-        return clientRepository.findAll().stream()
-                .map(this::builderClientDto)
-                .collect(Collectors.toList());
+    public Mono<ClientDto> getClientById(int id) {
+        return Mono.justOrEmpty(clientRepository.findById(id)
+                        .map(this::builderClientDto))
+                .switchIfEmpty(Mono.error(new NotFoundException(Constants.CLIENT_NOT_FOUND)));
     }
 
     @Override
-    public ClientDto getClientById(int id) {
-        return clientRepository.findById(id)
-                .map(this::builderClientDto)
-                .orElseThrow(() -> new NotFoundException(Constants.CLIENT_NOT_FOUND));
-    }
-
-    @Override
-    public ClientDto saveClient(ClientSaveDto clientDto) {
+    public Mono<ClientDto> saveClient(ClientSaveDto clientDto) {
         Client client = new Client();
-        client.setStatus(Constants.ACTIVO);
-        return builderClientDto(clientRepository
-                .save(builderClientBd(clientDto, client)));
+        client.setStatus(true);
+        return Mono.just(builderClientDto(clientRepository
+                .save(builderClientBd(clientDto, client))));
     }
 
     @Override
-    public ClientDto updateClient(int id, ClientSaveDto clientSaveDto) {
+    public Mono<ClientDto> updateClient(int id, ClientSaveDto clientSaveDto) {
         Client clientBd = clientRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(Constants.CLIENT_NOT_FOUND));
         clientBd.setStatus(clientSaveDto.isStatus());
-        return builderClientDto(clientRepository
-                .save(builderClientBd(clientSaveDto, clientBd)));
+        return Mono.just(builderClientDto(clientRepository
+                .save(builderClientBd(clientSaveDto, clientBd))));
     }
 
     @Override
-    public void deleteClientById(int id) {
+    public Mono<Void> deleteClientById(int id) {
         try {
             clientRepository.deleteById(id);
         } catch (EmptyResultDataAccessException ex) {
             throw new NotFoundException(Constants.CLIENT_NOT_FOUND);
         }
+        return Mono.empty();
     }
 
     private ClientDto builderClientDto(Client client) {

@@ -1,7 +1,10 @@
 package com.devsu.msaccount.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class Account {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    private double amount;
+    private double balance;
     private boolean status;
 
     @OneToMany(mappedBy = "account")

@@ -8,8 +8,8 @@ import lombok.Data;
 public class AccountDto {
     private int accountId;
     private String accountNumber;
-    private int idAccountType;
-    private int idClient;
-    private double amount;
+    private int accountTypeId;
+    private int clientId;
+    private double balance;
     private boolean status;
 }

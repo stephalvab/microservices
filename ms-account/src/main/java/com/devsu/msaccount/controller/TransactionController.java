@@ -2,9 +2,10 @@ package com.devsu.msaccount.controller;
 
 import com.devsu.msaccount.exception.MessageException;
 import com.devsu.msaccount.exception.NotFoundException;
-import com.devsu.msaccount.model.dto.AccountDto;
 import com.devsu.msaccount.model.dto.AccountSaveDto;
+import com.devsu.msaccount.model.dto.TransactionSaveDto;
 import com.devsu.msaccount.service.AccountService;
+import com.devsu.msaccount.service.TransactionService;
 import com.devsu.msaccount.util.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +15,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/cuentas")
-public class AccountController {
+@RequestMapping("/movimiento")
+public class TransactionController {
 
     @Autowired
-    private AccountService accountService;
+    private TransactionService transactionService;
 
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllAccounts() {
+    public ResponseEntity<?> getAllTransactions() {
         try {
-            return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.OK);
+            return new ResponseEntity<>(transactionService.getAllTransactions(), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(MessageException.Message(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()));
@@ -38,9 +38,9 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAccountById(@PathVariable int id) {
+    public ResponseEntity<?> getTransactionById(@PathVariable int id) {
         try {
-            return ResponseEntity.ok(accountService.getAccountById(id));
+            return ResponseEntity.ok(transactionService.getTransactionById(id));
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(MessageException.Message(HttpStatus.NOT_FOUND, e.getLocalizedMessage()));
@@ -52,9 +52,9 @@ public class AccountController {
 
     @PostMapping
     @Validated
-    public ResponseEntity<?> createAccount(@RequestBody @Valid AccountSaveDto accountSaveDto) {
+    public ResponseEntity<?> createTransaction(@RequestBody @Valid TransactionSaveDto transactionSaveDto) {
         try {
-            return new ResponseEntity<>(accountService.saveAccount(accountSaveDto), HttpStatus.CREATED);
+            return new ResponseEntity<>(transactionService.saveTransaction(transactionSaveDto), HttpStatus.CREATED);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(MessageException.Message(HttpStatus.INTERNAL_SERVER_ERROR, Constants.ERROR_BD));
@@ -66,9 +66,9 @@ public class AccountController {
 
     @PutMapping("/{id}")
     @Validated
-    public ResponseEntity<?> updateAccount(@PathVariable int id, @Valid @RequestBody AccountSaveDto accountSaveDto) {
+    public ResponseEntity<?> updateTransaction(@PathVariable int id, @Valid @RequestBody TransactionSaveDto transactionSaveDto) {
         try {
-            return new ResponseEntity<>(accountService.updateAccount(id, accountSaveDto), HttpStatus.CREATED);
+            return new ResponseEntity<>(transactionService.updateTransaction(id, transactionSaveDto), HttpStatus.CREATED);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(MessageException.Message(HttpStatus.INTERNAL_SERVER_ERROR,Constants.ERROR_BD));
@@ -82,9 +82,9 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAccountById(@PathVariable int id) {
+    public ResponseEntity<?> deleteTransactionById(@PathVariable int id) {
         try {
-            accountService.deleteAccountById(id);
+            transactionService.deleteTransactionById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

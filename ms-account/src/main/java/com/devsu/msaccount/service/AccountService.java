@@ -2,17 +2,17 @@ package com.devsu.msaccount.service;
 
 import com.devsu.msaccount.model.dto.AccountDto;
 import com.devsu.msaccount.model.dto.AccountSaveDto;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface AccountService {
-    List<AccountDto> getAllAccounts();
+    Flux<AccountDto> getAllAccounts();
 
-    AccountDto getAccountById(int id);
+    Mono<AccountDto> getAccountById(int id);
 
-    AccountDto saveAccount(AccountSaveDto AccountSaveDto);
+    Mono<AccountDto> saveAccount(AccountSaveDto AccountSaveDto);
 
-    AccountDto updateAccount(int id, AccountSaveDto AccountUpdateDto);
+    Mono<AccountDto> updateAccount(int id, AccountSaveDto AccountUpdateDto);
 
-    void deleteAccountById(int id);
+    Mono<Void> deleteAccountById(int id);
 }

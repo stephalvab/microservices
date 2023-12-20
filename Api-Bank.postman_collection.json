@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "ba1fb3aa-6a8b-4c24-940c-c1a8845db45d",
+		"name": "Api-Bank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Obtener todos los clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8282/clientes",
+							"host": [
+								"localhost"
+							],
+							"port": "8282",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cliente por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8282/clientes/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8282",
+							"path": [
+								"clientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Stephanie Alva\",\r\n    \"age\": 30,\r\n    \"gender\": \"F\",\r\n    \"identification\": \"71402624\",\r\n    \"address\": \"Av. Venezuela 5355\",\r\n    \"phone\": \"910831427\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8282/clientes",
+							"host": [
+								"localhost"
+							],
+							"port": "8282",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar cliente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Luis Perez\",\r\n    \"gender\": \"M\",\r\n    \"age\": 50,\r\n    \"identification\": \"4682424\",\r\n    \"address\": \"Av. Lima 5355\",\r\n    \"phone\": \"910813227\",\r\n    \"password\": \"4fr3\",\r\n    \"status\": true\r\n}\r\n\r\n    ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8282/clientes/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8282",
+							"path": [
+								"clientes",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar cliente por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8282/clientes/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8282",
+							"path": [
+								"clientes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Crear cuenta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountNumber\": \"13424535\",\r\n    \"idClient\": 1,\r\n    \"idAccountType\": 2,\r\n    \"balance\": 2000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8281/cuentas",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener  cuenta por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8281/cuentas/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"cuentas",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todas las cuentas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8281/cuentas",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar cuenta por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8281/cuentas/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"cuentas",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar cuenta por id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountNumber\": \"12456782\",\r\n    \"idAccountType\": 2,\r\n    \"idClient\": 1,\r\n    \"balance\": 2000.0,\r\n    \"status\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8281/cuentas/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"cuentas",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimientos",
+			"item": [
+				{
+					"name": "Obtener todos los movimientos ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8281/movimiento",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear movimiento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountId\": 4,\r\n    \"amount\": -400,\r\n    \"status\": true\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8281/movimiento",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener movimiento por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8281/movimiento/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"movimiento",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reportes",
+			"item": [
+				{
+					"name": "Estado de cuenta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8281/reportes?fechaInicio=10-12-2023&fechaFin=21-12-2023&cliente=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8281",
+							"path": [
+								"reportes"
+							],
+							"query": [
+								{
+									"key": "fechaInicio",
+									"value": "10-12-2023"
+								},
+								{
+									"key": "fechaFin",
+									"value": "21-12-2023"
+								},
+								{
+									"key": "cliente",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
